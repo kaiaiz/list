@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>菜单组件</title>
+    <script src="vue.js"></script>
+    <style>
+         *{
+             list-style: none;
+         }
+        .menu{
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<div class="menu" style="background: #fff">
+    <custom-menu v-for="item in arr" v-bind:todo="item" v-bind:key="item.title">
+    </custom-menu>
+</div>
+</body>
+</html>
+<script>
+    Vue.component("custom-menu",{
+        props:[
+            "todo",
+        ],
+        template:"<ul><h3 @click='shows(todo)'>{{todo.title}}</h3><transition name='fade' v-for='items in todo.con'><li v-if='todo.show'>{{items}}</li></transition></ul>",
+        methods:{
+            shows(item){
+                item.show=!item.show;
+            }
+        }
+    })
+    new Vue({
+        el:".menu",
+        data:{
+            arr:[
+                {"title":'aaa',"con":{"1":"aa1","2":"aa2"},"show": true},
+                {"title":'bbb',"con":{"1":"bb1","2":"bb2"},"show": true},
+                {"title":"ccc","con":{"1":"cc1","2":"cc2"},"show": true}
+            ],
+        }
+    })
+</script>
