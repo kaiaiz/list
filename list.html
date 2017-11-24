@@ -1,46 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>导航</title>
 
-    <style>
-         *{
-             list-style: none;
-         }
-        .menu{
-            float: left;
-        }
-    </style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .noActive {
+      display: none;
+    }
+    ul,li{
+      cursor: pointer;
+    }
+    li{
+      font-size: 0.85em;
+      margin-top: 0.5em;
+    }
+    ul{
+      list-style: none;
+    }
+    h3{
+      color:#34495e;
+      font-size: 20px;
+    }
+    a{
+      text-decoration: none;
+      font-weight: blod;
+      color:#34495e;
+    }
+    a:hover{
+      color:#42b983;
+    }
+  </style>
 </head>
+
 <body>
-<div class="menu" style="background: #fff">
-    <custom-menu v-for="item in arr" v-bind:todo="item" v-bind:key="item.title">
-    </custom-menu>
-</div>
-</body>
-</html>
-    <script src="vue.js"></script>
-<script>
-    Vue.component("custom-menu",{
-        props:[
-            "todo",
-        ],
-        template:"<ul><h3 @click='shows(todo)'>{{todo.title}}</h3><transition name='fade' v-for='items in todo.con'><li v-if='todo.show'>{{items}}</li></transition></ul>",
-        methods:{
-            shows(item){
-                item.show=!item.show;
-            }
+  <div id="demo">
+    <list v-for="unit in datas" v-bind:msg="unit"></list>
+  </div>
+
+  <script src="vue.js"></script>
+  <script>
+    Vue.component('list', {
+      props: ['msg'],
+      template: `<ul><h3 @click="active(msg.parent,msg.parent.active)">{{msg.parent.con}}</h3>
+      <ul :class="{'noActive':msg.parent.active=== false}"><li><li v-for='item in msg.parent.son'><a href=''>{{item.con}}</a></li></ul>
+      </ul>`,
+      methods: {
+        active: function (parent,active) {
+          if (active) {
+            parent.active = false;
+          } else {
+            parent.active = true;
+          }
         }
-    })
+      }
+    });
     new Vue({
-        el:".menu",
-        data:{
-            arr:[
-                {"title":'aaa',"con":{"1":"aa1","2":"aa2"},"show": true},
-                {"title":'bbb',"con":{"1":"bb1","2":"bb2"},"show": true},
-                {"title":"ccc","con":{"1":"cc1","2":"cc2"},"show": true}
-            ],
+      el: '#demo',
+      data: {
+        datas: [{
+          parent: {
+            con: 'aaa',
+            active: false,
+            son: [{
+                con: 'aa1'
+              },
+              {
+                con: 'aa2'
+              },
+              {
+                con: 'aa3'
+              }
+            ]
+          }
+        },
+        {
+          parent:{
+            con:'bbb',
+            active:false,
+            son:[{
+              con:'bb1'
+            },
+            {
+              con:'bb2'
+            },
+            {
+              con:'bb3'
+            }
+            ]
+          }
+        },
+        {
+          parent:{
+            con:'ccc',
+            active:false,
+            son:[{
+              con:'cc1'
+            },
+            {
+              con:'cc2'
+            },
+            {
+              con:'cc3'
+            }
+            ]
+          }
         }
-    })
-</script>
+        ]
+      }
+    });
+  </script>
+
+</body>
+
+</html>
